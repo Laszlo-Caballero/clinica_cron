@@ -27,7 +27,7 @@ const task = cron.schedule("0 * * * *", async () => {
   console.log("Iniciando tarea programada...");
   const totalPages = await count();
 
-  if (page >= totalPages) {
+  if (page > totalPages) {
     console.log("Se han procesado todas las páginas. Deteniendo el cron.");
     task.stop();
     return;
