@@ -1,5 +1,5 @@
 import type { EcoCountType, EcoType } from "../interface/ecografias.js";
-import fs from "fs/promises";
+import * as fs from "fs/promises";
 
 export async function saveReport(countPerType: EcoCountType[]) {
   const orderById = countPerType.sort((a, b) => {

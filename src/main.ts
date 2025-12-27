@@ -8,34 +8,37 @@ import { saveReport } from "./save-report/saveReport.js";
 import { loadState, saveState } from "./util/stateManager.js";
 config();
 
-const countPerType: EcoCountType[] = [];
-let page = await loadState();
-const sql = await connect();
-
 async function main() {
-  const totalPages = await count();
+  const countPerType: EcoCountType[] = [];
+  let page = await loadState();
+  const sql = await connect();
+  async function sqlProcedure() {
+    const totalPages = await count();
 
-  console.log(`Processing page ${page + 1} of ${totalPages}...`);
-  const offset = page * 1000;
+    console.log(`Processing page ${page + 1} of ${totalPages}...`);
+    const offset = page * 1000;
 
-  await updateRow(offset, sql, countPerType);
-  page++;
-  await saveState(page);
-}
-
-const task = cron.schedule("0 * * * *", async () => {
-  console.log("Iniciando tarea programada...");
-  const totalPages = await count();
-
-  if (page > totalPages) {
-    console.log("Se han procesado todas las páginas. Deteniendo el cron.");
-    task.stop();
-    return;
+    await updateRow(offset, sql, countPerType);
+    page++;
+    await saveState(page);
   }
 
-  console.log(`Página actual: ${page + 1}`);
-  await main();
-  
-  await saveReport(countPerType);
-  console.log("Tarea programada completada.");
-});
+  const task = cron.schedule("0 * * * *", async () => {
+    console.log("Iniciando tarea programada...");
+    const totalPages = await count();
+
+    if (page > totalPages) {
+      console.log("Se han procesado todas las páginas. Deteniendo el cron.");
+      task.stop();
+      return;
+    }
+
+    console.log(`Página actual: ${page + 1}`);
+    await sqlProcedure();
+
+    await saveReport(countPerType);
+    console.log("Tarea programada completada.");
+  });
+}
+
+main();

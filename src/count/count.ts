@@ -1,4 +1,4 @@
-import sql from "mssql";
+import * as sql from "mssql";
 export async function count() {
   const count = await sql.query`SELECT COUNT(*) AS count FROM ecografiacliente`;
 
