@@ -1,0 +1,26 @@
+{
+  "name": "html_parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "html-to-text": "^9.0.5",
+    "mssql": "^12.2.0",
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/html-to-text": "^9.0.4",
+    "@types/mssql": "^9.1.8",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
