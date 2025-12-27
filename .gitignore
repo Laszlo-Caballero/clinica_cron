@@ -1,3 +1,4 @@
 .env
 node_modules
 reportes_ecos_count.json
+process_state.json

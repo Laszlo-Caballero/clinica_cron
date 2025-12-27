@@ -5,10 +5,11 @@ import { count } from "./count/count.js";
 import { updateRow } from "./update-row/UpdateRow.js";
 import cron from "node-cron";
 import { saveReport } from "./save-report/saveReport.js";
+import { loadState, saveState } from "./util/stateManager.js";
 config();
 
 const countPerType: EcoCountType[] = [];
-let page = 0;
+let page = await loadState();
 const sql = await connect();
 
 async function main() {
@@ -19,6 +20,7 @@ async function main() {
 
   await updateRow(offset, sql, countPerType);
   page++;
+  await saveState(page);
 }
 
 const task = cron.schedule("0 * * * *", async () => {
@@ -33,6 +35,7 @@ const task = cron.schedule("0 * * * *", async () => {
 
   console.log(`Página actual: ${page + 1}`);
   await main();
+  
   await saveReport(countPerType);
   console.log("Tarea programada completada.");
 });
