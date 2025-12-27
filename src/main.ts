@@ -23,6 +23,8 @@ async function main() {
     await saveState(page);
   }
 
+  sqlProcedure();
+
   const task = cron.schedule("0 * * * *", async () => {
     console.log("Iniciando tarea programada...");
     const totalPages = await count();
